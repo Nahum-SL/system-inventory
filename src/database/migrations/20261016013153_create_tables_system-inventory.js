@@ -52,12 +52,10 @@ exports.up = async function (knex) {
     table.integer("persona_id").unsigned().notNullable();
     table.string("username", 150).notNullable().unique();
     table.string("password", 150).notNullable();
-    table.string("rol", 50).notNullable();
+    table.enu("rol", ["admin", "usuario"]).notNullable();
 
     table.foreign("persona_id").references("id").inTable("personas");
 
-    
-    table.checkIn("?? IN (?, ?)", ["rol", "admin", "usuario"]);
   });
 
   await knex.schema.createTable("activos", function (table) {
@@ -69,14 +67,13 @@ exports.up = async function (knex) {
     table.string("codigo_inventario", 150).notNullable().unique();
     table.date("fechaingreso").notNullable();
     table.string("descripcion", 250).notNullable();
-    table.string("estado", 50).defaultTo("activo").notNullable();
+    table.enu("estado", ["activo", "inactivo", "mantenimiento"]).notNullable();
     table.timestamp("fecharegistro").defaultTo(knex.fn.now()); // Guardamos la fecha
 
     table.foreign("marca_id").references("id").inTable("marcas");
     table.foreign("categoria_id").references("id").inTable("categorias");
     table.foreign("area_id").references("id").inTable("areas");
 
-    table.checkIn("?? IN (?, ?, ?)", ["estado", "activo", "inactivo", "mantenimiento"]);
   });
 
   await knex.schema.createTable("asignaciones", function (table) {
@@ -118,14 +115,14 @@ exports.up = async function (knex) {
   await knex.schema.createTable("mantenimientos", function (table) {
     table.increments("id").primary();
     table.integer("activo_id").unsigned().notNullable();
-    table.string("tipo", 50).notNullable();
+    table.enu("tipo", ["preventivo", "correctivo"]).notNullable();
+
     table.date("fecha").notNullable();
     table.string("descripcion", 250).notNullable();
     table.text("observaciones").nullable();
     table.decimal("costo", 10, 2).notNullable().defaultTo(0);
     table.timestamp("fecharegistro").defaultTo(knex.fn.now()); // Guardamos la fecha
 
-    table.check("?? IN (?, ?)", ["tipo", "preventivo", "correctivo"]);
     table.foreign("activo_id").references("id").inTable("activos");
   });
 };
