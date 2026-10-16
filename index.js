@@ -7,12 +7,17 @@ const PORT = process.env.PORT || 3000;
 // Middleware ya que la comunicacion se hace por JSON
 app.use(express.json());
 
+// Importamos las rutas
 const activosRouter = require("./src/routers/activos.routers");
+const authRoutes = require("./src/routers/auth.controller");
 
 // CORS
 const cors = require("cors");
 
+// Rutas de la API
 app.use("/api/activos", activosRouter);
+app.use("/api/auth", authRoutes);
+
 
 app.use(cors());
 
