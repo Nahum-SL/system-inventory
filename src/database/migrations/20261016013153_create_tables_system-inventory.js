@@ -6,7 +6,7 @@ exports.up = async function (knex) {
   // ======================
   // TABLAS INDEPENDIENTES
   // ======================
-  await knex.schema.createTable("personas", function (table) {
+  await knex.schema.create-Table("personas", function (table) {
     table.increments("id").primary();
     table.string("apellidos", 150).notNullable();
     table.string("nombres", 150).notNullable();
@@ -55,7 +55,6 @@ exports.up = async function (knex) {
     table.enu("rol", ["admin", "usuario"]).notNullable();
 
     table.foreign("persona_id").references("id").inTable("personas");
-
   });
 
   await knex.schema.createTable("activos", function (table) {
@@ -73,7 +72,6 @@ exports.up = async function (knex) {
     table.foreign("marca_id").references("id").inTable("marcas");
     table.foreign("categoria_id").references("id").inTable("categorias");
     table.foreign("area_id").references("id").inTable("areas");
-
   });
 
   await knex.schema.createTable("asignaciones", function (table) {
