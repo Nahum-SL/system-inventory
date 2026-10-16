@@ -56,7 +56,8 @@ exports.up = async function (knex) {
 
     table.foreign("persona_id").references("id").inTable("personas");
 
-    table.check("rol", ["admin", "usuario"]);
+    
+    table.checkIn("?? IN (?, ?)", ["rol", "admin", "usuario"]);
   });
 
   await knex.schema.createTable("activos", function (table) {
@@ -75,7 +76,7 @@ exports.up = async function (knex) {
     table.foreign("categoria_id").references("id").inTable("categorias");
     table.foreign("area_id").references("id").inTable("areas");
 
-    table.check("estado", ["activo", "inactivo", "mantenimiento"]);
+    table.checkIn("?? IN (?, ?, ?)", ["estado", "activo", "inactivo", "mantenimiento"]);
   });
 
   await knex.schema.createTable("asignaciones", function (table) {
@@ -124,7 +125,7 @@ exports.up = async function (knex) {
     table.decimal("costo", 10, 2).notNullable().defaultTo(0);
     table.timestamp("fecharegistro").defaultTo(knex.fn.now()); // Guardamos la fecha
 
-    table.check("tipo", ["preventivo", "correctivo"]);
+    table.check("?? IN (?, ?)", ["tipo", "preventivo", "correctivo"]);
     table.foreign("activo_id").references("id").inTable("activos");
   });
 };
